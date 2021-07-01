@@ -28,7 +28,10 @@ BTN5_LEFT = tools.get_uuid('33c87ba4-d9b3-11eb-94e4-a4badbf92500')
 BTN5_RIGHT = tools.get_uuid('33c87ba4-d9b3-11eb-94e4-a4badbf92501')
 
 
-TARGETS = [tools.get_uuid('db206d28-da87-11eb-8902-509a4c5add63')]
+PC_MENYU = tools.get_uuid('a2e5b57c-da8c-11eb-88bf-29e1f24a3566')
+PC_WINDOWS = tools.get_uuid('db206d28-da87-11eb-8902-509a4c5add63')
+
+TARGETS = [PC_WINDOWS,PC_MENYU]
 
 dev = None
 
