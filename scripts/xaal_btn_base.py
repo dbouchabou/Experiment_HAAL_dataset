@@ -28,7 +28,7 @@ BTN5_LEFT = tools.get_uuid('33c87ba4-d9b3-11eb-94e4-a4badbf92500')
 BTN5_RIGHT = tools.get_uuid('33c87ba4-d9b3-11eb-94e4-a4badbf92501')
 
 
-TARGETS = []
+TARGETS = [tools.get_uuid('558c7e24-da81-11eb-96bd-cc483ac19e2d')]
 
 dev = None
 
