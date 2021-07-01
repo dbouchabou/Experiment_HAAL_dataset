@@ -28,7 +28,7 @@ BTN5_LEFT = tools.get_uuid('33c87ba4-d9b3-11eb-94e4-a4badbf92500')
 BTN5_RIGHT = tools.get_uuid('33c87ba4-d9b3-11eb-94e4-a4badbf92501')
 
 
-TARGETS = [tools.get_uuid('558c7e24-da81-11eb-96bd-cc483ac19e2d')]
+TARGETS = [tools.get_uuid('db206d28-da87-11eb-8902-509a4c5add63')]
 
 dev = None
 
@@ -101,10 +101,12 @@ def handle_msg(msg):
     if msg.action == 'double_click':
         if msg.source == BTN0_LEFT:
             #start_activity("Stop Recording")
+            logger.warning("Start Recording")
             stop_activity("Default")
 
         if msg.source == BTN0_RIGHT:
             #start_activity("Stop IR Cams Recording")
+            logger.warning("Start IR Cams Recording")
             stop_activity("Default")
         
         if msg.source == BTN1_LEFT:
