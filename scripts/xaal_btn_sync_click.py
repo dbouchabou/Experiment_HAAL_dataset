@@ -1,10 +1,19 @@
-from xaal.lib import Engine, tools
+from xaal.lib import Engine, tools,helpers
 from xaal.schemas import devices
 import platform
-import socket
+import pyautogui
+import time
+import logging
+pyautogui.FAILSAFE = False
 
-PKG_NAME = 'btn_relay'
 
+PKG_NAME = 'btn_darkvador '
+
+helpers.setup_console_logger()
+
+logger = logging.getLogger(PKG_NAME)
+
+BTN0 = tools.get_uuid('5b71a6bc-d814-11eb-94e4-a4badbf92500')
 BTN1 = tools.get_uuid('5b71a6bc-d814-11eb-94e4-a4badbf92501')
 
 dev = None
@@ -20,14 +29,22 @@ def handle_msg(msg):
     # search for the buttons 
 
     if msg.action == 'click':
-        if msg.source in [BTN1]:
-            #print("BNT 1")
-            if btn_state == 1:
-                print("Start Recording")
-                btn_state = 2
-            else:
-                print("Stop Recording")
-                btn_state = 1
+        if msg.source == BTN0:
+            logger.info("Start Recording")
+            #get focus Kinect
+            #pyautogui.click(180, 15)
+            #click on record Kinect
+            pyautogui.click(160, 95)
+            
+            #get focus Xsens
+            #pyautogui.click(1425, 15)
+            #click on record Xsens
+            pyautogui.click(1425, 65)
+            
+        if msg.source == BTN1:
+            logger.info("Stop Recording")
+            pyautogui.click(160, 95)
+            pyautogui.click(1425, 65)
             
 
 def main():
