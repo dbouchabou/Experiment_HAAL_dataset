@@ -6,30 +6,31 @@ import logging
 PKG_NAME = 'btn_palpatin'
 
 helpers.setup_console_logger()
-
 logger = logging.getLogger(PKG_NAME)
 
-BTN0_LEFT = tools.get_uuid('5b71a6bc-d814-11eb-94e4-a4badbf92500')
-BTN0_RIGHT = tools.get_uuid('5b71a6bc-d814-11eb-94e4-a4badbf92501')
+UUID = tools.get_uuid
 
-BTN1_LEFT = tools.get_uuid('9e6448d0-d9b3-11eb-94e4-a4badbf92500')
-BTN1_RIGHT = tools.get_uuid('9e6448d0-d9b3-11eb-94e4-a4badbf92501')
+BTN0_LEFT = UUID('5b71a6bc-d814-11eb-94e4-a4badbf92500')
+BTN0_RIGHT = BTN0_LEFT + 1 
 
-BTN2_LEFT = tools.get_uuid('c82a3602-d9b3-11eb-94e4-a4badbf92500')
-BTN2_RIGHT = tools.get_uuid('c82a3602-d9b3-11eb-94e4-a4badbf92501')
+BTN1_LEFT = UUID('9e6448d0-d9b3-11eb-94e4-a4badbf92500')
+BTN1_RIGHT = BTN1_LEFT + 1 
 
-BTN3_LEFT = tools.get_uuid('f7945c38-d9b3-11eb-94e4-a4badbf92500')
-BTN3_RIGHT = tools.get_uuid('f7945c38-d9b3-11eb-94e4-a4badbf92501')
+BTN2_LEFT = UUID('c82a3602-d9b3-11eb-94e4-a4badbf92500')
+BTN2_RIGHT = BTN2_LEFT + 1 
 
-BTN4_LEFT = tools.get_uuid('68907b0c-d9b3-11eb-94e4-a4badbf92500')
-BTN4_RIGHT = tools.get_uuid('68907b0c-d9b3-11eb-94e4-a4badbf92501')
+BTN3_LEFT = UUID('f7945c38-d9b3-11eb-94e4-a4badbf92500')
+BTN3_RIGHT = BTN3_LEFT + 1 
 
-BTN5_LEFT = tools.get_uuid('33c87ba4-d9b3-11eb-94e4-a4badbf92500')
-BTN5_RIGHT = tools.get_uuid('33c87ba4-d9b3-11eb-94e4-a4badbf92501')
+BTN4_LEFT = UUID('68907b0c-d9b3-11eb-94e4-a4badbf92500')
+BTN4_RIGHT = BTN4_LEFT + 1
+
+BTN5_LEFT = UUID('33c87ba4-d9b3-11eb-94e4-a4badbf92500')
+BTN5_RIGHT = BTN5_LEFT + 1
 
 
-PC_MENYU = tools.get_uuid('a2e5b57c-da8c-11eb-88bf-29e1f24a3566')
-PC_WINDOWS = tools.get_uuid('db206d28-da87-11eb-8902-509a4c5add63')
+PC_MENYU = UUID('a2e5b57c-da8c-11eb-88bf-29e1f24a3566')
+PC_WINDOWS = UUID('db206d28-da87-11eb-8902-509a4c5add63')
 
 TARGETS = [PC_WINDOWS,PC_MENYU]
 
@@ -37,7 +38,6 @@ dev = None
 
 
 def send(targets,action,body=None):
-    global dev
     engine = dev.engine
     engine.send_request(dev,targets,action,body)
 
@@ -48,14 +48,11 @@ def start_activity(activity):
     tmp = tmp.replace(' ','_')
     send(TARGETS,'start_activity',{'activity':tmp})
 
-
 def stop_activity(activity):
     logger.info(f"Switch to activity: {activity}")
     tmp = activity.lower()
     tmp = tmp.replace(' ','_')
     send(TARGETS,'stop_activity',{'activity':tmp})
-    
-
 
 def handle_msg(msg):
     if not msg.is_notify():
