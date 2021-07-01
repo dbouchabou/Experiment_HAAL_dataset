@@ -13,7 +13,7 @@ BTN0_LEFT = tools.get_uuid('5b71a6bc-d814-11eb-94e4-a4badbf92500')
 BTN0_RIGHT = tools.get_uuid('5b71a6bc-d814-11eb-94e4-a4badbf92501')
 
 BTN1_LEFT = tools.get_uuid('9e6448d0-d9b3-11eb-94e4-a4badbf92500')
-BTN1_RIGHT = tools.get_uuid('9e6448d0-d9b3-11eb-94e4-a4badbf92500')
+BTN1_RIGHT = tools.get_uuid('9e6448d0-d9b3-11eb-94e4-a4badbf92501')
 
 BTN2_LEFT = tools.get_uuid('c82a3602-d9b3-11eb-94e4-a4badbf92500')
 BTN2_RIGHT = tools.get_uuid('c82a3602-d9b3-11eb-94e4-a4badbf92501')
@@ -46,6 +46,14 @@ def start_activity(activity):
     send(TARGETS,'start_activity',{'activity':tmp})
 
 
+def stop_activity(activity):
+    logger.info(f"Switch to activity: {activity}")
+    tmp = activity.lower()
+    tmp = tmp.replace(' ','_')
+    send(TARGETS,'stop_activity',{'activity':tmp})
+    
+
+
 def handle_msg(msg):
     if not msg.is_notify():
         return
@@ -53,10 +61,12 @@ def handle_msg(msg):
 
     if msg.action == 'click':
         if msg.source == BTN0_LEFT:
-            logging.warning("Start Recording")
+            logger.warning("Start Recording")
+            start_activity("Default")
 
         if msg.source == BTN0_RIGHT:
             logger.warning("Start IR Cams Recording")
+            start_activity("Default")
         
         if msg.source == BTN1_LEFT:
             start_activity("Cook Breakf")
@@ -90,10 +100,12 @@ def handle_msg(msg):
     
     if msg.action == 'double_click':
         if msg.source == BTN0_LEFT:
-            start_activity("Stop Recording")
+            #start_activity("Stop Recording")
+            stop_activity("Default")
 
         if msg.source == BTN0_RIGHT:
-            start_activity("Stop IR Cams Recording")
+            #start_activity("Stop IR Cams Recording")
+            stop_activity("Default")
         
         if msg.source == BTN1_LEFT:
             start_activity("Eat Breakf")
