@@ -1,6 +1,7 @@
 from xaal.lib import Engine, tools, helpers
 from xaal.schemas import devices
 import platform
+import logging
 
 PKG_NAME = 'btn_palpatin'
 
@@ -27,99 +28,108 @@ BTN5_LEFT = tools.get_uuid('33c87ba4-d9b3-11eb-94e4-a4badbf92500')
 BTN5_RIGHT = tools.get_uuid('33c87ba4-d9b3-11eb-94e4-a4badbf92501')
 
 
+TARGETS = []
+
 dev = None
-sock = None
-btn_state = 1
+
+
+def send(targets,action,body=None):
+    global dev
+    engine = dev.engine
+    engine.send_request(dev,targets,action,body)
+
+
+def start_activity(activity):
+    logger.info(f"Switch to activity: {activity}")
+    tmp = activity.lower()
+    tmp = tmp.replace(' ','_')
+    send(TARGETS,'start_activity',{'activity':tmp})
+
 
 def handle_msg(msg):
-
-    global btn_state
-
     if not msg.is_notify():
         return
     # search for the buttons 
 
     if msg.action == 'click':
         if msg.source == BTN0_LEFT:
-            logger.info("Start Recording")
+            logging.warning("Start Recording")
 
         if msg.source == BTN0_RIGHT:
-            logger.info("Start IR Cams Recording")
+            logger.warning("Start IR Cams Recording")
         
         if msg.source == BTN1_LEFT:
-            logger.info("Activity Cook Breakf")
+            start_activity("Cook Breakf")
 
         if msg.source == BTN1_RIGHT:
-            logger.info("Activity Cook Lunch")
+            start_activity("Cook Lunch")
 
         if msg.source == BTN2_LEFT:
-            logger.info("Activity Cook Dinner")
+            start_activity("Cook Dinner")
 
         if msg.source == BTN2_RIGHT:
-            logger.info("Activity Wash Dishes")
+            start_activity("Wash Dishes")
 
         if msg.source == BTN3_LEFT:
-            logger.info("Activity Sleep")
+            start_activity("Sleep")
 
         if msg.source == BTN3_RIGHT:
-            logger.info("Activity Go To Toilets")
+            start_activity("Go To Toilets")
 
         if msg.source == BTN4_LEFT:
-            logger.info("Activity Dress")
+            start_activity("Dress")
 
         if msg.source == BTN4_RIGHT:
-            logger.info("Activity Leave Home")
+            start_activity("Leave Home")
 
         if msg.source == BTN5_LEFT:
-            logger.info("Activity Watch TV")
+            start_activity("Watch TV")
 
         if msg.source == BTN5_RIGHT:
-            logger.info("Activity Read")
-            
-
+            start_activity("Read")
     
     if msg.action == 'double_click':
         if msg.source == BTN0_LEFT:
-            logger.info("Stop Recording")
+            start_activity("Stop Recording")
 
         if msg.source == BTN0_RIGHT:
-            logger.info("Stop IR Cams Recording")
+            start_activity("Stop IR Cams Recording")
         
         if msg.source == BTN1_LEFT:
-            logger.info("Activity Eat Breakf")
+            start_activity("Eat Breakf")
 
         if msg.source == BTN1_RIGHT:
-            logger.info("Activity Eat Lunch")
+            start_activity("Eat Lunch")
 
         if msg.source == BTN2_LEFT:
-            logger.info("Activity Eat Dinner")
+            start_activity("Eat Dinner")
 
         if msg.source == BTN2_RIGHT:
-            logger.info("NA")
+            start_activity("NA")
 
         if msg.source == BTN3_LEFT:
-            logger.info("Activity Sleep In Bed")
+            start_activity("Sleep In Bed")
 
         if msg.source == BTN3_RIGHT:
-            logger.info("Activity Bathe")
+            start_activity("Bathe")
 
         if msg.source == BTN4_LEFT:
-            logger.info("NA")
+            start_activity("NA")
 
         if msg.source == BTN4_RIGHT:
-            logger.info("Activity Enter Home")
+            start_activity("Enter Home")
 
         if msg.source == BTN5_LEFT:
-            logger.info("Activity Take Medicine")
+            start_activity("Take Medicine")
 
         if msg.source == BTN5_RIGHT:
-            logger.info("NA")
+            start_activity("NA")
             
 
 def main():
     global dev
 
-    dev = devices.basic()
+    dev = devices.scenario()
     dev.info = '%s@%s' % (PKG_NAME,platform.node())
     engine = Engine()
     engine.add_device(dev)
