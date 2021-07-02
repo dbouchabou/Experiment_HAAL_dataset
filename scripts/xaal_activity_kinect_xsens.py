@@ -42,7 +42,7 @@ def main():
         cfg.write()
     addr = tools.get_uuid(cfg['config']['addr'])
 
-    dev = devices.scenario(addr)
+    dev = devices.hmi(addr)
     dev.add_method('start_activity',start_activity)
     dev.add_method('stop_recording',stop_recording)
     dev.new_attribute("state",None)

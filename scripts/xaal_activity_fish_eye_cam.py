@@ -16,34 +16,29 @@ dev = None
 base_directory = "/run/user/1000/gvfs/smb-share:server=10.77.3.109,share=e/dataset/tmp"
 
 
-def start_activity(_activity):
+def start_recording():
 
     global processus_ir_cam_big
-    global processus_ir_cam_small
 
-    if dev.attributes[0].value == True:
-        processus_ir_cam_big.terminate()
-        processus_ir_cam_small.terminate()
+    if dev.attributes[0].value != True:
 
-    dev.attributes[0].value = True
-    dev.attributes[1].value = _activity
-    logger.debug(f"Starting recording {_activity}")
+        dev.attributes[0].value = True
+        logger.debug(f"Starting recording Fish Eye")
 
-    path_big = base_directory+"/"+_activity+"/Optrix"
+        path_big = base_directory+"/"
 
-    if not os.path.exists(path_big):
-        os.makedirs(path_big)
+        if not os.path.exists(path_big):
+            os.makedirs(path_big)
 
-    processus_ir_cam_big = subprocess.Popen(args=["rosrun","optris_drivers","camera.py", "-a", _activity, "-d",path_big], stdout=subprocess.PIPE)
-    
-
-    path_small = base_directory+"/"+_activity+"/mini_IR"
-    filename = "/miniIR.mp4"
-    
-    if not os.path.exists(path_small):
-        os.makedirs(path_small)
-
-    processus_ir_cam_small = subprocess.Popen(args=["ffmpeg","-i","rtsp://xaal-c.enstb.org:8554/flir1", path_small+filename], stdout=subprocess.PIPE)
+        processus_ir_cam_big = subprocess.Popen(args=["ffmpeg",
+                                                        "-i",
+                                                        "rtsp://admin:AWITIR@10.77.3.110:554", 
+                                                        "-f", 
+                                                        "segment",
+                                                        "-segment_time",
+                                                        "1800",
+                                                        "salon_capture-%03d.mp4"
+                                                        ], stdout=subprocess.PIPE)
     
 
 def stop_recording():
@@ -52,10 +47,8 @@ def stop_recording():
     dev.attributes[1].value = None
 
     global processus_ir_cam_big
-    global processus_ir_cam_small
 
     processus_ir_cam_big.terminate()
-    processus_ir_cam_small.terminate()
 
 def main():
     global dev
@@ -66,7 +59,7 @@ def main():
     addr = tools.get_uuid(cfg['config']['addr'])
 
     dev = devices.hmi(addr)
-    dev.add_method('start_activity',start_activity)
+    dev.add_method('start_activity',start_recording)
     dev.add_method('stop_recording',stop_recording)
     dev.new_attribute("state",None)
     dev.new_attribute("activity",None)

@@ -92,11 +92,11 @@ def handle_msg(msg):
     
     if msg.action == 'double_click':
         if msg.source == BTN0:
-            logger.warning("Start Recording all")
+            logger.warning("Stop Recording All")
             send(TARGETS,'stop_recording')
 
         if msg.source == (BTN0+1):
-            logger.warning("Start IR Cams Recording")
+            logger.warning("Stop IR Cams Recording")
             send([TARGETS[0],TARGETS[1]],'stop_recording')
         
         activity = search_dclick_btn(msg.source)
