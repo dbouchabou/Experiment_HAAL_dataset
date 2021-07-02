@@ -5,7 +5,7 @@ import subprocess
 import os
 
 
-PKG='activity_switcher_kinect_xsens'
+PKG='activity_switcher_fish_eye_cam'
 
 helpers.setup_console_logger()
 logger = logging.getLogger(PKG)
@@ -16,13 +16,15 @@ dev = None
 base_directory = "/run/user/1000/gvfs/smb-share:server=10.77.3.109,share=e/dataset/tmp"
 
 
-def start_recording():
+def start_activity(_activity):
 
     global processus_ir_cam_big
 
     if dev.attributes[0].value != True:
 
         dev.attributes[0].value = True
+        dev.attributes[1].value = _activity
+
         logger.debug(f"Starting recording Fish Eye")
 
         path_big = base_directory+"/"
@@ -59,11 +61,12 @@ def main():
     addr = tools.get_uuid(cfg['config']['addr'])
 
     dev = devices.hmi(addr)
-    dev.add_method('start_activity',start_recording)
+    dev.add_method('start_activity',start_activity)
     dev.add_method('stop_recording',stop_recording)
     dev.new_attribute("state",None)
     dev.new_attribute("activity",None)
-    
+    dev.info = 'FISH EYE CAM'
+
     eng = Engine()
     eng.add_device(dev)
     eng.run()

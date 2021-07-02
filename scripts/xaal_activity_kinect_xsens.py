@@ -16,15 +16,17 @@ dev = None
 
 
 def start_activity(_activity):
-    dev.attributes[0].value = True
-    dev.attributes[1].value = _activity
-    logger.debug(f"Starting recording {_activity}")
+    if dev.attributes[0].value == True and dev.attributes[1].value != _activity:
+        
+        dev.attributes[0].value = True
+        dev.attributes[1].value = _activity
+        logger.debug(f"Starting recording {_activity}")
 
-    #click on record Kinect
-    pyautogui.click(160, 95)
+        #click on record Kinect
+        pyautogui.click(160, 95)
 
-    #click on record Xsens
-    pyautogui.click(1425, 65)
+        #click on record Xsens
+        pyautogui.click(1425, 65)
 
 def stop_recording():
     logger.debug(f"Stop recording")
@@ -47,6 +49,7 @@ def main():
     dev.add_method('stop_recording',stop_recording)
     dev.new_attribute("state",None)
     dev.new_attribute("activity",None)
+    dev.info = 'KINECT CAMS'
     
     eng = Engine()
     eng.add_device(dev)
