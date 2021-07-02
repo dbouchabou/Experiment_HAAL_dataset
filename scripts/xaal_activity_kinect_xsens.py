@@ -44,6 +44,8 @@ def stop_recording():
 
     # Stop xsens
     pyautogui.click(1425, 65)
+    time.sleep(0.5)
+    pyautogui.click(1400, 670)
 
     
 

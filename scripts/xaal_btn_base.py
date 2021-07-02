@@ -84,7 +84,8 @@ def handle_msg(msg):
 
         if msg.source == (BTN0+1):
             logger.warning("Start IR Cams Recording")
-            start_activity("Default")
+            #start_activity("Default")
+            send([TARGETS[0],TARGETS[1]],'start_activity',{'activity':'default'})
 
         activity = search_click_btn(msg.source)
         if activity:
