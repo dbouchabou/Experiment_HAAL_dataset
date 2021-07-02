@@ -33,9 +33,9 @@ DCLICK_MAP = [
     [BTN5,"Take Medicine",None],
 ]
 
-PC_MENYU = UUID('a2e5b57c-da8c-11eb-88bf-29e1f24a3566')
-PC_WINDOWS = UUID('db206d28-da87-11eb-8902-509a4c5add63')
-TARGETS = [PC_WINDOWS,PC_MENYU]
+PC_MENYU_IR = UUID('a2e5b57c-da8c-11eb-88bf-29e1f24a3566')
+PC_WINDOWS_KINECT_XSENS = UUID('db206d28-da87-11eb-8902-509a4c5add63')
+TARGETS = [PC_MENYU_IR,PC_WINDOWS_KINECT_XSENS]
 
 dev = None
 
@@ -50,11 +50,9 @@ def start_activity(activity):
     tmp = tmp.replace(' ','_')
     send(TARGETS,'start_activity',{'activity':tmp})
 
-def stop_activity(activity):
-    logger.info(f"Switch to activity: {activity}")
-    tmp = activity.lower()
-    tmp = tmp.replace(' ','_')
-    send(TARGETS,'stop_activity',{'activity':tmp})
+#def stop_recording():
+#    logger.info(f"Stop recoding")
+#    send(TARGETS,'stop_recording')
 
 def search_click_btn(addr):
     for k in CLICK_MAP:
@@ -94,12 +92,12 @@ def handle_msg(msg):
     
     if msg.action == 'double_click':
         if msg.source == BTN0:
-            logger.warning("Start Recording")
-            stop_activity("Default")
+            logger.warning("Start Recording all")
+            send(TARGETS,'stop_recording')
 
         if msg.source == (BTN0+1):
             logger.warning("Start IR Cams Recording")
-            stop_activity("Default")
+            send([TARGETS[0],TARGETS[1]],'stop_recording')
         
         activity = search_dclick_btn(msg.source)
         if activity:
