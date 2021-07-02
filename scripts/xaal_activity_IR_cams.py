@@ -13,7 +13,7 @@ logger = logging.getLogger(PKG)
 
 dev = None
 
-base_directory = "/run/user/1000/gvfs/smb-share:server=10.77.3.109,share=e/dataset/tmp"
+base_directory = "/run/user/1000/gvfs/smb-share:server=10.77.3.109,share=e/dataset/subject_tmp"
 
 
 def start_activity(_activity):
@@ -22,8 +22,7 @@ def start_activity(_activity):
     global processus_ir_cam_small
 
     if dev.attributes[0].value == True:
-        processus_ir_cam_big.terminate()
-        processus_ir_cam_small.terminate()
+        stop_recording()
 
     dev.attributes[0].value = True
     dev.attributes[1].value = _activity

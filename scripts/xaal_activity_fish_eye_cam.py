@@ -14,7 +14,7 @@ logger = logging.getLogger(PKG)
 dev = None
 
 #base_directory = "/run/user/1000/gvfs/smb-share:server=10.77.3.109,share=e/dataset/tmp"
-base_directory = "/Volumes/desktop-hi76jc1/dataset/tmp"
+base_directory = "/Volumes/desktop-hi76jc1/dataset/subject_tmp"
 
 
 def start_activity(_activity):
@@ -40,7 +40,7 @@ def start_activity(_activity):
                                                         "segment",
                                                         "-segment_time",
                                                         "1800",
-                                                        "salon_capture-%03d.mp4"
+                                                        path_big+"salon_capture-%03d.mp4"
                                                         ], stdout=subprocess.PIPE)
     
 
