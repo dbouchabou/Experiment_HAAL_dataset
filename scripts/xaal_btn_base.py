@@ -56,59 +56,88 @@ def start_activity(activity):
 #    send(TARGETS,'stop_recording')
 
 def search_click_btn(addr):
+    i = 2
     for k in CLICK_MAP:
         if k[0]==addr:
-            return k[1]
+            return (k[1],i)
         if (k[0] + 1) == addr:
-            return k[2]
-    return None
+            return (k[2],i+1)
+        i = i + 2
+    return (None,0)
 
 def search_dclick_btn(addr):
+    i = 12
     for k in DCLICK_MAP:
         if k[0]==addr:
-            return k[1]
+            return (k[1],i)
         if (k[0] + 1) == addr:
-            return k[2]
-    return None
+            return (k[2],i+1)
+        i = i +2
+    return (None,0)
 
+def set_activity_idx(value):
+    if type(value) == int:
+        dev.attributes[0].value = value
+    else:
+        logger.error("setting wrong activity idx")
+
+def dump_activities():
+    print("Click MAP:")
+    i = 1
+    for k in CLICK_MAP:
+        print(f"btn:{i} {search_click_btn(k[0])} {search_click_btn(k[0]+1)}")
+        i = i + 1
+    print()
+    print("DClick MAP:")
+    i = 1
+    for k in DCLICK_MAP:
+        print(f"btn:{i} {search_dclick_btn(k[0])} {search_dclick_btn(k[0]+1)}")
+        i = i +1 
+    print()
 
 def handle_msg(msg):
     if not msg.is_notify():
         return
-    # search for the buttons 
 
     if msg.action == 'click':
         if msg.source == BTN0:
             logger.warning("Start Recording")
             start_activity("Default")
+            set_activity_idx(1)
 
         if msg.source == (BTN0+1):
             logger.warning("Start IR Cams Recording")
             #start_activity("Default")
             send([TARGETS[0],TARGETS[1]],'start_activity',{'activity':'default'})
+            set_activity_idx(1)
 
-        activity = search_click_btn(msg.source)
+        (activity,idx) = search_click_btn(msg.source)
         if activity:
             start_activity(activity)
+            set_activity_idx(idx)
             
     
     if msg.action == 'double_click':
         if msg.source == BTN0:
             logger.warning("Stop Recording All")
             send(TARGETS,'stop_recording')
+            set_activity_idx(0)
 
         if msg.source == (BTN0+1):
             logger.warning("Stop IR Cams Recording")
             send([TARGETS[0],TARGETS[1]],'stop_recording')
+            set_activity_idx(0)
         
-        activity = search_dclick_btn(msg.source)
+        (activity,idx) = search_dclick_btn(msg.source)
         if activity:
             start_activity(activity)
+            set_activity_idx(idx)
 
 def main():
     global dev
-
+    dump_activities()
     dev = devices.scenario()
+    dev.new_attribute("activity_idx",0)
     dev.info = '%s@%s' % (PKG_NAME,platform.node())
     engine = Engine()
     engine.add_device(dev)
