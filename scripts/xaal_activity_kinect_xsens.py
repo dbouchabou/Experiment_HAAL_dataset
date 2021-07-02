@@ -2,6 +2,7 @@ from xaal.lib import Device, Engine, tools,helpers
 from xaal.schemas import devices
 import logging
 import pyautogui
+import time
 
 
 pyautogui.FAILSAFE = False
@@ -19,6 +20,7 @@ def start_activity(_activity):
     
     if dev.attributes[0].value == True:
         stop_recording()
+        time.sleep(1)
 
     dev.attributes[0].value = True
     dev.attributes[1].value = _activity
