@@ -17,6 +17,9 @@ dev = None
 
 def start_activity(_activity):
     
+    if dev.attributes[0].value == True:
+        stop_recording()
+
     dev.attributes[0].value = True
     dev.attributes[1].value = _activity
     logger.debug(f"Starting recording {_activity}")

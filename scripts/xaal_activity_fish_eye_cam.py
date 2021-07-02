@@ -13,7 +13,8 @@ logger = logging.getLogger(PKG)
 
 dev = None
 
-base_directory = "/run/user/1000/gvfs/smb-share:server=10.77.3.109,share=e/dataset/tmp"
+#base_directory = "/run/user/1000/gvfs/smb-share:server=10.77.3.109,share=e/dataset/tmp"
+base_directory = "/Volumes/desktop-hi76jc1/dataset/tmp"
 
 
 def start_activity(_activity):
