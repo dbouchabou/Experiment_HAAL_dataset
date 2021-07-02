@@ -16,17 +16,16 @@ dev = None
 
 
 def start_activity(_activity):
-    if dev.attributes[0].value == False and dev.attributes[1].value != _activity:
+    
+    dev.attributes[0].value = True
+    dev.attributes[1].value = _activity
+    logger.debug(f"Starting recording {_activity}")
 
-        dev.attributes[0].value = True
-        dev.attributes[1].value = _activity
-        logger.debug(f"Starting recording {_activity}")
+    # click on record Kinect
+    pyautogui.click(160, 95)
 
-        # click on record Kinect
-        pyautogui.click(160, 95)
-
-        # click on record Xsens
-        pyautogui.click(1425, 65)
+    # click on record Xsens
+    pyautogui.click(1425, 65)
 
 def stop_recording():
     logger.debug(f"Stop recording")
