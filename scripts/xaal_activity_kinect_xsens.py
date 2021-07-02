@@ -22,6 +22,8 @@ def start_activity(_activity):
     logger.debug(f"Starting recording {_activity}")
 
     # click on record Kinect
+    # Click on "RECORD" to prepare the next record
+    pyautogui.click(180, 45)
     pyautogui.click(160, 95)
 
     # click on record Xsens
@@ -38,8 +40,7 @@ def stop_recording():
     # Stop xsens
     pyautogui.click(1425, 65)
 
-    # Click on "RECORD" to prepare the next record
-    pyautogui.click(180, 45)
+    
 
 def main():
     global dev
