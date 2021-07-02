@@ -16,7 +16,7 @@ dev = None
 
 
 def start_activity(_activity):
-    if dev.attributes[0].value == True and dev.attributes[1].value != _activity:
+    if dev.attributes[0].value == False and dev.attributes[1].value != _activity:
 
         dev.attributes[0].value = True
         dev.attributes[1].value = _activity
