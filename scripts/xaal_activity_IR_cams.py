@@ -3,6 +3,7 @@ from xaal.schemas import devices
 import logging
 import subprocess
 import os
+import time
 
 
 PKG='activity_switcher_kinect_xsens'
@@ -22,7 +23,20 @@ def start_activity(_activity):
     global processus_ir_cam_small
 
     if dev.attributes[0].value == True:
-        stop_recording()
+        stop_recording_optrix()
+	time.sleep(1)
+
+
+    if dev.attributes[0].value != True:
+        path_small = base_directory+"/"+_activity+"/mini_IR"
+        filename = "/miniIR.mp4"
+    
+        if not os.path.exists(path_small):
+            os.makedirs(path_small)
+        processus_ir_cam_small = subprocess.Popen(args=["ffmpeg","-i","rtsp://xaal-c.enstb.org:8554/flir1", path_small+filename], stdout=subprocess.PIPE)
+	
+        time.sleep(10)
+
 
     dev.attributes[0].value = True
     dev.attributes[1].value = _activity
@@ -35,14 +49,6 @@ def start_activity(_activity):
 
     processus_ir_cam_big = subprocess.Popen(args=["rosrun","optris_drivers","camera.py", "-a", _activity, "-d",path_big], stdout=subprocess.PIPE)
     
-
-    path_small = base_directory+"/"+_activity+"/mini_IR"
-    filename = "/miniIR.mp4"
-    
-    if not os.path.exists(path_small):
-        os.makedirs(path_small)
-
-    processus_ir_cam_small = subprocess.Popen(args=["ffmpeg","-i","rtsp://xaal-c.enstb.org:8554/flir1", path_small+filename], stdout=subprocess.PIPE)
     
 
 def stop_recording():
@@ -55,6 +61,15 @@ def stop_recording():
 
     processus_ir_cam_big.terminate()
     processus_ir_cam_small.terminate()
+
+
+def stop_recording_optrix():
+    logger.debug(f"Stop recording Optrix")
+
+    global processus_ir_cam_big
+
+    processus_ir_cam_big.terminate()
+
 
 def main():
     global dev
