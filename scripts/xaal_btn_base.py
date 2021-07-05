@@ -22,7 +22,7 @@ CLICK_MAP = [
     [BTN2,"Cook Dinner","Wash Dishes"],
     [BTN3,"Sleep","Go to Toilets"],
     [BTN4,"Dress","Leave Home"],
-    [BTN5,"Watch TV","Read"],
+    [BTN5,"Watch TV","Take Medicine"],
 ]
 
 DCLICK_MAP = [
@@ -30,7 +30,7 @@ DCLICK_MAP = [
     [BTN2,"Eat Dinner",None],
     [BTN3,"Sleep in Bed","Bathe"],
     [BTN4,None,"Enter Home"],
-    [BTN5,"Take Medicine",None],
+    [BTN5,"Read",None],
 ]
 
 PC_MENYU_IR = UUID('a2e5b57c-da8c-11eb-88bf-29e1f24a3566')
@@ -77,7 +77,7 @@ def search_dclick_btn(addr):
 
 def set_activity_idx(value):
     if type(value) == int:
-        dev.attributes[0].value = value
+        dev.attributes[2].value = value
     else:
         logger.error("setting wrong activity idx")
 
@@ -136,7 +136,12 @@ def handle_msg(msg):
 def main():
     global dev
     dump_activities()
-    dev = devices.scenario()
+    cfg = tools.load_cfg(PKG_NAME)
+    if cfg == None:
+        cfg = tools.new_cfg(PKG_NAME)
+        cfg.write()
+    addr = tools.get_uuid(cfg['config']['addr'])
+    dev = devices.scenario(addr)
     dev.new_attribute("activity_idx",0)
     dev.info = '%s@%s' % (PKG_NAME,platform.node())
     engine = Engine()

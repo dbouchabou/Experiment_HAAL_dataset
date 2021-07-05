@@ -3,6 +3,7 @@ from xaal.schemas import devices
 import logging
 import subprocess
 import os
+import time
 
 
 PKG='activity_switcher_fish_eye_cam'
@@ -14,7 +15,8 @@ logger = logging.getLogger(PKG)
 dev = None
 
 #base_directory = "/run/user/1000/gvfs/smb-share:server=10.77.3.109,share=e/dataset/tmp"
-base_directory = "/Volumes/desktop-hi76jc1/dataset/subject_tmp"
+#base_directory = "/Volumes/desktop-hi76jc1/dataset/subject_tmp"
+base_directory = "E:\dataset\subject_tmp"
 
 
 def start_activity(_activity):
@@ -22,6 +24,8 @@ def start_activity(_activity):
     global processus_ir_cam_big
 
     if dev.attributes[0].value != True:
+        logger.debug(f"Wainting for 10s Fish Eye")
+        time.sleep(10)
 
         dev.attributes[0].value = True
         dev.attributes[1].value = _activity
