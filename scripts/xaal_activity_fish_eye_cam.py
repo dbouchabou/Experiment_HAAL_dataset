@@ -16,8 +16,9 @@ dev = None
 
 #base_directory = "/run/user/1000/gvfs/smb-share:server=10.77.3.109,share=e/dataset/tmp"
 #base_directory = "/Volumes/desktop-hi76jc1/dataset/subject_tmp"
-base_directory = "/Volumes/10.77.3.109/dataset/subject_tmp"
+#base_directory = "/Volumes/10.77.3.109/dataset/subject_tmp"
 #base_directory = "E:\dataset\subject_tmp"
+base_directory = "/Volumes/E_2/dataset/subject_tmp"
 
 
 def start_activity(_activity):
