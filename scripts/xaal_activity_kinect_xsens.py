@@ -18,25 +18,25 @@ dev = None
 
 def start_activity(_activity):
     
-    if dev.attributes[0].value == True:
-        stop_recording_tmp()
-        time.sleep(1)
+    #if dev.attributes[0].value == True:
+    #    stop_recording_tmp()
+    #    time.sleep(3)
 
     if dev.attributes[0].value != True:
         logger.debug(f"Wainting for 10s Kinect and Xsens")
         time.sleep(10)
         
-    dev.attributes[0].value = True
-    dev.attributes[1].value = _activity
-    logger.debug(f"Starting recording {_activity}")
+        dev.attributes[0].value = True
+        dev.attributes[1].value = _activity
+        logger.debug(f"Starting recording {_activity}")
 
-    # click on record Kinect
-    # Click on "RECORD" to prepare the next record
-    pyautogui.click(180, 45)
-    pyautogui.click(160, 95)
+        # click on record Kinect
+        # Click on "RECORD" to prepare the next record
+        pyautogui.click(180, 45)
+        pyautogui.click(160, 95)
 
-    # click on record Xsens
-    pyautogui.click(1425, 65)
+        # click on record Xsens
+        pyautogui.click(1425, 65)
 
 def stop_recording():
     logger.debug(f"Stop recording")
